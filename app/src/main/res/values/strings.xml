@@ -9,5 +9,6 @@
     <string name="login_get_started">Get started</string>
     <string name="login_forgot_password">Forgot password?</string>
 
-
+    <!-- Home -->
+    <string name="home_title">Accounts</string>
 </resources>

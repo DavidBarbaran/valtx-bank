@@ -44,6 +44,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.valtx.bank.R
 import com.valtx.bank.presentation.components.PrimaryButton
 import com.valtx.bank.presentation.components.PrimaryTextButton
+import com.valtx.bank.presentation.navigation.Screen
 import com.valtx.bank.presentation.theme.ValtxBankTheme
 import kotlin.text.isDigit
 
@@ -98,7 +99,11 @@ fun LoginScreen(navController: NavController) {
                 .wrapContentWidth()
                 .padding(top = 24.dp),
             text = stringResource(R.string.login_get_started),
-            onClick = {}
+            onClick = {
+                navController.navigate(Screen.Home.route) {
+                    popUpTo(Screen.Login.route) { inclusive = true }
+                }
+            }
         )
 
         Spacer(modifier = Modifier.weight(1f))

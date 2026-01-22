@@ -9,6 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.valtx.bank.presentation.home.HomeScreen
 import com.valtx.bank.presentation.login.LoginScreen
 import com.valtx.bank.presentation.navigation.Screen
 import com.valtx.bank.presentation.theme.ValtxBankTheme
@@ -32,6 +33,9 @@ fun MainNavHost() {
     NavHost(rootNavController, startDestination = Screen.Login.route) {
         composable(Screen.Login.route) {
             LoginScreen(rootNavController)
+        }
+        composable(Screen.Home.route) {
+            HomeScreen(rootNavController)
         }
     }
 }
