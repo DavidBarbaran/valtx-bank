@@ -29,6 +29,7 @@ import androidx.navigation.compose.rememberNavController
 import com.valtx.bank.R
 import com.valtx.bank.presentation.model.Product
 import com.valtx.bank.presentation.model.productsFake
+import com.valtx.bank.presentation.navigation.Screen
 import com.valtx.bank.presentation.theme.ValtxBankTheme
 import kotlinx.coroutines.delay
 
@@ -70,7 +71,10 @@ fun HomeScreen(navController: NavController) {
 
             ProductList(
                 modifier = Modifier,
-                products = productsFake
+                products = productsFake,
+                onClick = {
+                    navController.navigate(Screen.AccountDetails.route)
+                }
             )
         }
     }
@@ -84,7 +88,11 @@ fun HomeScreen(navController: NavController) {
 }
 
 @Composable
-fun ProductList(modifier: Modifier, products: List<Product>) {
+fun ProductList(
+    modifier: Modifier,
+    products: List<Product>,
+    onClick: () -> Unit
+) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(
@@ -98,7 +106,7 @@ fun ProductList(modifier: Modifier, products: List<Product>) {
         ) { product ->
             ProductItem(
                 product = product,
-                onClick = {}
+                onClick = onClick
             )
         }
     }
