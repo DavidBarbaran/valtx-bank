@@ -1,4 +1,4 @@
-package com.valtx.bank.presentation.home
+package com.valtx.bank.presentation.features.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

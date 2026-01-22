@@ -1,4 +1,4 @@
-package com.valtx.bank.presentation.detail
+package com.valtx.bank.presentation.features.detail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,7 +38,6 @@ import androidx.navigation.compose.rememberNavController
 import com.valtx.bank.R
 import com.valtx.bank.presentation.components.PrimaryButton
 import com.valtx.bank.presentation.extensions.icon
-import com.valtx.bank.presentation.home.ProductItem
 import com.valtx.bank.presentation.model.CardBrand
 import com.valtx.bank.presentation.model.Currency
 import com.valtx.bank.presentation.model.Product

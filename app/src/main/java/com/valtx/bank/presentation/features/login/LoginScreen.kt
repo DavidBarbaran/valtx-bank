@@ -1,4 +1,4 @@
-package com.valtx.bank.presentation.login
+package com.valtx.bank.presentation.features.login
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -18,14 +18,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -35,13 +39,15 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.valtx.bank.R
+import com.valtx.bank.presentation.components.DialogAlert
+import com.valtx.bank.presentation.components.LoadingOverlay
 import com.valtx.bank.presentation.components.PrimaryButton
 import com.valtx.bank.presentation.components.PrimaryTextButton
 import com.valtx.bank.presentation.navigation.Screen
@@ -49,7 +55,57 @@ import com.valtx.bank.presentation.theme.ValtxBankTheme
 import kotlin.text.isDigit
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(
+    navController: NavController,
+    viewModel: LoginViewModel = hiltViewModel(),
+) {
+
+    val loginUiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
+
+    var showDialog by remember { mutableStateOf(false) }
+    var dialogText by remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+
+        viewModel.events.collect { event ->
+            when (event) {
+
+                LoginEvent.LoginSuccess -> {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
+                }
+
+                is LoginEvent.ShowError -> {
+                    dialogText = event.message
+                    showDialog = true
+                }
+            }
+        }
+    }
+
+    LoginScreenUI(
+        onLogin = { document, password ->
+            viewModel.login(document, password)
+        }
+    )
+
+    if (showDialog) {
+        DialogAlert(
+            textContent = dialogText,
+            textButton = "Aceptar",
+            onDismiss = { showDialog = false }
+        )
+    }
+
+    if (loginUiState.isLoading) {
+        LoadingOverlay()
+    }
+}
+
+@Composable
+fun LoginScreenUI(onLogin: (String, String) -> Unit) {
 
     val lottieComposition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.ic_coin))
 
@@ -100,9 +156,7 @@ fun LoginScreen(navController: NavController) {
                 .padding(top = 24.dp),
             text = stringResource(R.string.login_get_started),
             onClick = {
-                navController.navigate(Screen.Home.route) {
-                    popUpTo(Screen.Login.route) { inclusive = true }
-                }
+                onLogin(document, password)
             }
         )
 
@@ -171,7 +225,7 @@ fun PasswordTextField(
     OutlinedTextField(
         value = value,
         onValueChange = { newValue ->
-            if (newValue.length <= 12) onValueChange(newValue)
+            if (newValue.length <= 20) onValueChange(newValue)
         },
         modifier = Modifier
             .padding(start = 20.dp, end = 20.dp, top = 20.dp)
@@ -212,6 +266,6 @@ fun PasswordTextField(
 @Composable
 fun LoginScreenPreview() {
     ValtxBankTheme {
-        LoginScreen(rememberNavController())
+        LoginScreenUI(onLogin = { document, password -> })
     }
 }

@@ -9,12 +9,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.valtx.bank.presentation.detail.AccountDetailScreen
-import com.valtx.bank.presentation.home.HomeScreen
-import com.valtx.bank.presentation.login.LoginScreen
+import com.valtx.bank.presentation.features.detail.AccountDetailScreen
+import com.valtx.bank.presentation.features.home.HomeScreen
+import com.valtx.bank.presentation.features.login.LoginScreen
 import com.valtx.bank.presentation.navigation.Screen
 import com.valtx.bank.presentation.theme.ValtxBankTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

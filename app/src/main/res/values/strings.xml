@@ -9,6 +9,10 @@
     <string name="login_get_started">Iniciar sesión</string>
     <string name="login_forgot_password">¿Olvidaste tu contraseña?</string>
 
+    <string name="login_error_validate_empty_fields">El DNI y contraseña son campos obligatorios</string>
+    <string name="login_error_document">El DNI debe tener 8 digitos</string>
+    <string name="login_error_password">La contraseña debe tener como minimo 10 digitos</string>
+
     <!-- Home -->
     <string name="home_title">Productos</string>
 
