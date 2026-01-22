@@ -44,7 +44,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.valtx.bank.R
-import com.valtx.bank.presentation.components.DialogAlert
+import com.valtx.bank.presentation.components.BasicDialog
 import com.valtx.bank.presentation.components.LoadingOverlay
 import com.valtx.bank.presentation.components.PrimaryButton
 import com.valtx.bank.presentation.extensions.icon
@@ -86,7 +86,7 @@ fun AccountDetailScreen(
     }
 
     if (showDialog) {
-        DialogAlert(
+        BasicDialog(
             textContent = dialogText,
             textButton = stringResource(R.string.retry),
             onDismiss = {

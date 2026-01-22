@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.valtx.bank.presentation.theme.ValtxBankTheme
 
 @Composable
-fun DialogAlert(
+fun BasicDialog(
     textContent: String,
     textButton: String,
     onDismiss: () -> Unit
@@ -46,7 +46,7 @@ fun DialogAlert(
 @Composable
 fun PreviewAboutDialog() {
     ValtxBankTheme {
-        DialogAlert(
+        BasicDialog(
             textContent = "Ocurrio un error inesperado",
             textButton = "Reintentar",
             onDismiss = {}

@@ -29,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -46,7 +45,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.valtx.bank.R
-import com.valtx.bank.presentation.components.DialogAlert
+import com.valtx.bank.presentation.components.BasicDialog
 import com.valtx.bank.presentation.components.LoadingOverlay
 import com.valtx.bank.presentation.components.PrimaryButton
 import com.valtx.bank.presentation.components.PrimaryTextButton
@@ -91,7 +90,7 @@ fun LoginScreen(
     )
 
     if (showDialog) {
-        DialogAlert(
+        BasicDialog(
             textContent = dialogText,
             textButton = "Aceptar",
             onDismiss = { showDialog = false }
