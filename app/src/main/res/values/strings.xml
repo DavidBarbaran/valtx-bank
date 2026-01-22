@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">VALTX Bank</string>
+
+    <!-- Login -->
+    <string name="login_title">Valtx Bank</string>
+    <string name="login_description">Enter valid username and password to continue</string>
+    <string name="login_document">Document</string>
+    <string name="login_password">Password</string>
+    <string name="login_get_started">Get started</string>
+    <string name="login_forgot_password">Forgot password?</string>
+
+
 </resources>
