@@ -15,28 +15,84 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.valtx.bank.R
-import com.valtx.bank.presentation.model.Product
-import com.valtx.bank.presentation.model.productsFake
+import com.valtx.bank.presentation.components.DialogAlert
+import com.valtx.bank.presentation.components.LoadingOverlay
+import com.valtx.bank.presentation.model.ProductUi
 import com.valtx.bank.presentation.navigation.Screen
 import com.valtx.bank.presentation.theme.ValtxBankTheme
-import kotlinx.coroutines.delay
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(
+    navController: NavController,
+    viewModel: HomeViewModel = hiltViewModel(),
+) {
 
-    var isRefreshing by rememberSaveable { mutableStateOf(false) }
+    val homeUiState by viewModel.uiState.collectAsState()
+
+    var showDialog by remember { mutableStateOf(false) }
+    var dialogText by remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+
+        viewModel.getProducts()
+
+        viewModel.events.collect { event ->
+            when (event) {
+                is HomeEvent.ShowError -> {
+                    dialogText = event.message
+                    showDialog = true
+                }
+            }
+        }
+    }
+
+    HomeScreenUI(
+        navController = navController,
+        products = homeUiState.products,
+        isRefreshing = homeUiState.isRefreshing,
+        onRefresh = {
+            viewModel.refreshProducts()
+        }
+    )
+
+    if (showDialog) {
+        DialogAlert(
+            textContent = dialogText,
+            textButton = "Reintentar",
+            onDismiss = {
+                showDialog = false
+                viewModel.getProducts()
+            }
+        )
+    }
+
+    if (homeUiState.isLoading) {
+        LoadingOverlay()
+    }
+}
+
+@Composable
+fun HomeScreenUI(
+    navController: NavController,
+    products: List<ProductUi>,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
+) {
     val state = rememberPullToRefreshState()
 
     Column(
@@ -53,9 +109,7 @@ fun HomeScreen(navController: NavController) {
 
         PullToRefreshBox(
             isRefreshing = isRefreshing,
-            onRefresh = {
-                isRefreshing = true
-            },
+            onRefresh = onRefresh,
             state = state,
             indicator = {
                 Indicator(
@@ -71,18 +125,11 @@ fun HomeScreen(navController: NavController) {
 
             ProductList(
                 modifier = Modifier,
-                products = productsFake,
+                products = products,
                 onClick = {
                     navController.navigate(Screen.AccountDetails.route)
                 }
             )
-        }
-    }
-
-    LaunchedEffect(isRefreshing) {
-        if (isRefreshing) {
-            delay(1200)
-            isRefreshing = false
         }
     }
 }
@@ -90,8 +137,8 @@ fun HomeScreen(navController: NavController) {
 @Composable
 fun ProductList(
     modifier: Modifier,
-    products: List<Product>,
-    onClick: () -> Unit
+    products: List<ProductUi>,
+    onClick: () -> Unit,
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -114,8 +161,16 @@ fun ProductList(
 
 @Preview(showSystemUi = true)
 @Composable
-fun HomeScreenPreview() {
+fun HomeScreenPreview(
+    @PreviewParameter(ProductsPreviewProvider::class)
+    products: List<ProductUi>,
+) {
     ValtxBankTheme {
-        HomeScreen(rememberNavController())
+        HomeScreenUI(
+            navController = rememberNavController(),
+            products = products,
+            isRefreshing = false,
+            onRefresh = {}
+        )
     }
 }

@@ -3,8 +3,9 @@ package com.valtx.bank.presentation.features.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.valtx.bank.R
-import com.valtx.bank.domain.login.LoginResult
 import com.valtx.bank.domain.login.LoginUseCase
+import com.valtx.bank.domain.result.Result
+import com.valtx.bank.presentation.features.login.LoginEvent.*
 import com.valtx.bank.presentation.providers.ResourcesProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -67,19 +68,8 @@ class LoginViewModel @Inject constructor(
         val result = loginUseCase.invoke(document, password)
 
         when (result) {
-            is LoginResult.Error -> {
-                _events.emit(
-                    LoginEvent.ShowError(
-                        result.message
-                    )
-                )
-            }
-
-            LoginResult.Success -> {
-                _events.emit(
-                    LoginEvent.LoginSuccess
-                )
-            }
+            is Result.Error -> _events.emit(ShowError(result.message))
+            is Result.Success<Unit> -> _events.emit(LoginSuccess)
         }
 
         _uiState.update { uiState ->

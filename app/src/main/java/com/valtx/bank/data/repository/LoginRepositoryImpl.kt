@@ -4,14 +4,17 @@ import android.os.Build
 import com.valtx.bank.BuildConfig
 import com.valtx.bank.data.api.RestApi
 import com.valtx.bank.data.providers.DeviceInfoProvider
-import com.valtx.bank.data.entity.AppRequest
-import com.valtx.bank.data.entity.DeviceRequest
-import com.valtx.bank.data.entity.LoginRequest
-import com.valtx.bank.domain.login.LoginResult
-import com.valtx.bank.data.entity.ProfileRequest
-import com.valtx.bank.data.entity.UserRequest
+import com.valtx.bank.data.entity.login.AppRequest
+import com.valtx.bank.data.entity.login.DeviceRequest
+import com.valtx.bank.data.entity.login.LoginRequest
+import com.valtx.bank.data.entity.login.ProfileRequest
+import com.valtx.bank.data.entity.login.UserRequest
+import com.valtx.bank.data.util.ANDROID
+import com.valtx.bank.data.util.DEFAULT_ERROR_MESSAGE
+import com.valtx.bank.data.util.UNKNOWN
 import com.valtx.bank.data.util.parseApiError
 import com.valtx.bank.domain.repository.LoginRepository
+import com.valtx.bank.domain.result.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -21,24 +24,16 @@ class LoginRepositoryImpl @Inject constructor(
     private val deviceInfoProvider: DeviceInfoProvider
 ) : LoginRepository {
 
-    companion object {
-        private const val UNKNOWN = "Unknown"
-        private const val ANDROID = "android"
-        private const val DEFAULT_ERROR_MESSAGE = "Ocurrió un error inesperado, vuelva a intentarlo"
-    }
-
     override suspend fun login(
         document: String,
         password: String
-    ): LoginResult = withContext(Dispatchers.IO) {
+    ): Result<Unit> = withContext(Dispatchers.IO) {
 
         val request = LoginRequest(
             user = UserRequest(
                 userCode = document,
                 pass = password,
-                profile = ProfileRequest(
-                    language = "es"
-                )
+                profile = ProfileRequest(language = "es")
             ),
             device = DeviceRequest(
                 deviceId = deviceInfoProvider.generateDeviceId(),
@@ -58,25 +53,20 @@ class LoginRepositoryImpl @Inject constructor(
             val response = api.login(request)
 
             if (response.isSuccessful) {
-
-                val body = response.body()
-                if (body != null) {
-                    LoginResult.Success
-                } else {
-                    LoginResult.Error(DEFAULT_ERROR_MESSAGE)
-                }
+                response.body()?.let {
+                    Result.Success(Unit)
+                } ?: Result.Error(DEFAULT_ERROR_MESSAGE)
 
             } else {
                 val apiError = parseApiError(response.errorBody())
 
-                LoginResult.Error(
-                    apiError?.error?.userMessage?.es
-                        ?: DEFAULT_ERROR_MESSAGE
+                Result.Error(
+                    apiError?.error?.userMessage?.es ?: DEFAULT_ERROR_MESSAGE
                 )
             }
 
         } catch (e: Exception) {
-            LoginResult.Error(DEFAULT_ERROR_MESSAGE)
+            Result.Error(DEFAULT_ERROR_MESSAGE)
         }
     }
 }

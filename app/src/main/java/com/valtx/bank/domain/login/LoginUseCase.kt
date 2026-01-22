@@ -1,6 +1,7 @@
 package com.valtx.bank.domain.login
 
 import com.valtx.bank.domain.repository.LoginRepository
+import com.valtx.bank.domain.result.Result
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(
@@ -9,7 +10,7 @@ class LoginUseCase @Inject constructor(
     suspend operator fun invoke(
         username: String,
         password: String,
-    ): LoginResult {
+    ): Result<Unit> {
         return repository.login(username, password)
     }
 }

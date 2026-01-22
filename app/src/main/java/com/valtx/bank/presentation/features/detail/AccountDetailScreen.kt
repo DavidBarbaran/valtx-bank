@@ -40,21 +40,22 @@ import com.valtx.bank.presentation.components.PrimaryButton
 import com.valtx.bank.presentation.extensions.icon
 import com.valtx.bank.presentation.model.CardBrand
 import com.valtx.bank.presentation.model.Currency
-import com.valtx.bank.presentation.model.Product
-import com.valtx.bank.presentation.model.Transaction
+import com.valtx.bank.presentation.model.ProductUi
+import com.valtx.bank.presentation.model.TransactionUi
 import com.valtx.bank.presentation.model.transactionsFake
 import com.valtx.bank.presentation.theme.ValtxBankTheme
+import java.math.BigDecimal
 
 @Composable
 fun AccountDetailScreen(navController: NavController) {
 
     val product = remember {
-        Product(
+        ProductUi(
             id = 1,
             name = "Cuenta soles",
             cardBrand = CardBrand.VISA,
             currency = Currency.PEN,
-            amount = "1,000.80",
+            amount = BigDecimal("1000.80"),
             accountNumber = "898 3492915083"
         )
     }
@@ -115,7 +116,7 @@ fun AccountDetailTopBar(
 
 @Composable
 fun ProductCard(
-    product: Product,
+    product: ProductUi,
 ) {
 
     ElevatedCard(
@@ -184,7 +185,7 @@ fun ProductCard(
 
 @Composable
 fun TransactionList(
-    transactions: List<Transaction>,
+    transactions: List<TransactionUi>,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),

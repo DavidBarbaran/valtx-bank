@@ -61,7 +61,6 @@ fun LoginScreen(
 ) {
 
     val loginUiState by viewModel.uiState.collectAsState()
-    val context = LocalContext.current
 
     var showDialog by remember { mutableStateOf(false) }
     var dialogText by remember { mutableStateOf("") }

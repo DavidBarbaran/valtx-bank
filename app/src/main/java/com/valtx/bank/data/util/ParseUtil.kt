@@ -1,6 +1,6 @@
 package com.valtx.bank.data.util
 
-import com.valtx.bank.data.entity.ApiErrorResponse
+import com.valtx.bank.data.entity.error.ApiErrorResponse
 import kotlinx.serialization.json.Json
 import okhttp3.ResponseBody
 

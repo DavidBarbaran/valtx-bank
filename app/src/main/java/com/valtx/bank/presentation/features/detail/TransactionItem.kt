@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valtx.bank.presentation.model.Currency
-import com.valtx.bank.presentation.model.Transaction
+import com.valtx.bank.presentation.model.TransactionUi
 import com.valtx.bank.presentation.theme.Green
 import com.valtx.bank.presentation.theme.Red
 import com.valtx.bank.presentation.theme.ValtxBankTheme
@@ -24,7 +24,7 @@ import java.math.BigDecimal
 @Composable
 fun TransactionItem(
     modifier: Modifier = Modifier,
-    transaction: Transaction
+    transaction: TransactionUi
 ) {
 
     val amountColor = if (transaction.amount < BigDecimal.ZERO) Red else Green
@@ -69,7 +69,7 @@ fun TransactionItem(
 @Composable
 fun TransactionItemPreview() {
 
-    val transaction = Transaction(
+    val transaction = TransactionUi(
         id = 1,
         description = "PLIN",
         date = "12 Ene 2025",

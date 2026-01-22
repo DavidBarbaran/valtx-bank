@@ -20,13 +20,14 @@ import androidx.compose.ui.unit.dp
 import com.valtx.bank.presentation.extensions.icon
 import com.valtx.bank.presentation.model.CardBrand
 import com.valtx.bank.presentation.model.Currency
-import com.valtx.bank.presentation.model.Product
+import com.valtx.bank.presentation.model.ProductUi
 import com.valtx.bank.presentation.theme.ValtxBankTheme
+import java.math.BigDecimal
 
 @Composable
 fun ProductItem(
     modifier: Modifier = Modifier,
-    product: Product,
+    product: ProductUi,
     onClick: () -> Unit,
 ) {
     ElevatedCard(
@@ -75,12 +76,12 @@ fun ProductItem(
 @Preview
 @Composable
 fun ProductItemPreview() {
-    val product = Product(
+    val product = ProductUi(
         id = 1,
         name = "Cuenta soles",
         cardBrand = CardBrand.VISA,
         currency = Currency.PEN,
-        amount = "1,000.80",
+        amount = BigDecimal("1,000.80"),
         accountNumber = "898 3492915083"
     )
     ValtxBankTheme {

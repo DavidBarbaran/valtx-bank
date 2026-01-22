@@ -2,7 +2,7 @@ package com.valtx.bank.presentation.model
 
 import java.math.BigDecimal
 
-data class Transaction(
+data class TransactionUi(
     val id: Int,
     val description: String,
     val date: String,

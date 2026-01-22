@@ -1,4 +1,4 @@
-package com.valtx.bank.data.entity
+package com.valtx.bank.data.entity.login
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
