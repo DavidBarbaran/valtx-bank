@@ -8,6 +8,5 @@ fun ProductResponse.toDomain() = Product(
     name = name,
     cardBrand = cardBrand,
     currency = currency,
-    amount = amount,
-    accountNumber = accountNumber
+    amount = amount
 )

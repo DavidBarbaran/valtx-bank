@@ -21,8 +21,5 @@ data class ProductResponse(
 
     @SerialName("amount")
     @Serializable(with = BigDecimalSerializer::class)
-    val amount: BigDecimal,
-
-    @SerialName("accountNumber")
-    val accountNumber: String
+    val amount: BigDecimal
 )

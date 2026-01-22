@@ -82,7 +82,6 @@ fun ProductItemPreview() {
         cardBrand = CardBrand.VISA,
         currency = Currency.PEN,
         amount = BigDecimal("1,000.80"),
-        accountNumber = "898 3492915083"
     )
     ValtxBankTheme {
         ProductItem(

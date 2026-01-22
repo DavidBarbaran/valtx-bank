@@ -7,6 +7,5 @@ data class Product(
     val name: String,
     val cardBrand: String,
     val currency: String,
-    val amount: BigDecimal,
-    val accountNumber: String
+    val amount: BigDecimal
 )

@@ -10,6 +10,5 @@ fun Product.toUi() = ProductUi(
     name = name,
     cardBrand = CardBrand.fromText(cardBrand),
     currency = Currency.fromText(currency),
-    amount = amount,
-    accountNumber = accountNumber
+    amount = amount
 )

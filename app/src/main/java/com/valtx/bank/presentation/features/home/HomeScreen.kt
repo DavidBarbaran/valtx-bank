@@ -73,7 +73,7 @@ fun HomeScreen(
     if (showDialog) {
         DialogAlert(
             textContent = dialogText,
-            textButton = "Reintentar",
+            textButton = stringResource(R.string.retry),
             onDismiss = {
                 showDialog = false
                 viewModel.getProducts()
@@ -127,7 +127,10 @@ fun HomeScreenUI(
                 modifier = Modifier,
                 products = products,
                 onClick = {
-                    navController.navigate(Screen.AccountDetails.route)
+                    navController.navigate(Screen.AccountDetails.route) {
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
             )
         }
