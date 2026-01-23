@@ -57,7 +57,7 @@ La capa de dominio es la que se encarga de ejecutar la logica de negocio e inter
 - Interactors
 
 ### Capa de datos :open_file_folder:
-La capa de datos es la que se encarga de gestionar los datos locales y remotos de la aplicación, usando **Retrofit** para el consumo de web Services y Realm para guardar datos localmente:
+La capa de datos es la que se encarga de gestionar los datos locales y remotos de la aplicación, usando **Retrofit** para el consumo de web Services, donde encontramos los siguientes elementos:
 
 - Repository
 - Data Entity
